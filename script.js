@@ -21,6 +21,20 @@ function startQuiz() {
     $('#main-container').children().hide()
     $('#time-remaining').show()
     $('#questions').show()
+    var slides = []
+    slide = {
+        number: 1,
+        question: "Which of the following is a programming language? Like an actual programming language",
+        answer_choices: ['JavaScript', 'HTML', 'CSS', "jquery"],
+        correct_answer: "JavaScript"
+    }
+    $('.card-title').text('Question #' + slide.number)
+    $('.card-text').text(slide.question)
+    $('#a').text(slide.answer_choices[0])
+    $('#b').text(slide.answer_choices[1])
+    $('#c').text(slide.answer_choices[2])
+    $('#d').text(slide.answer_choices[3])
+
 }
 
 function endQuiz() {

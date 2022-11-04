@@ -12,14 +12,14 @@
 </head>
 
 <body>
-    <div id="containter">
+    <div class="container">
         <header>
 
         </header>
-        <main class="container">
+        <main id="main-container" class="container">
             <!-- Welcome Component -->
-            <section class="row">
-                <div class="col d-flex flex-column justify-content-center align-items-center ">
+            <section id="welcome" class="row my-4">
+                <div class="col d-flex flex-column justify-content-center align-items-center">
                     <h2>Welcome to Coding Quiz! Test your knowledge</h2>
                     <p>
                         Test your coding knowledge against your friends, take this quiz and find out how smart you are.
@@ -27,11 +27,15 @@
                         quos inventore veniam recusandae, consequuntur optio quisquam, deserunt error repudiandae
                         possimus fugiat molestiae minus labore.
                     </p>
-                    <button class="btn btn-primary">Start</button>
+                    <div class="d-flex flex-row justify-content-between w-50">
+                        <button class="start-btn btn btn-primary">Start</button>
+                        <button class="highscores-btn btn btn-secondary">Highscores</a>
+                    </div>
                 </div>
             </section>
             <!-- Question Component -->
-            <section class="card row">
+            <h3 id="time-remaining">Time Remaining: </h3>
+            <section id="questions" class="card row my-4">
                 <div class="card-body">
                     <h5 class="card-title">Question 1</h5>
                     <p class="card-text">Which of the following is a programming language? Like an actual programming
@@ -45,17 +49,21 @@
                 </div>
             </section>
             <!-- All Done component -->
-            <section class="row">
+            <section id="done" class="row my-4">
                 <div class="col d-flex flex-column justify-content-center align-items-center">
                     <h2>All Done!</h2>
                     <p>Here is your score: </p>
                     <h2>100</h2>
                     <label for="initials">Enter your initials: </label>
-                    <input type="text" id="initials" name="initials">
+                    <input type="text" id="initials" name="initials" class="my-2">
+                    <div class="d-flex flex-row justify-content-between w-50 my-2">
+                        <button class="start-btn btn btn-primary">Play again</a>
+                        <button class="highscores-btn btn btn-secondary">Highscores</a>
+                    </div>
                 </div>
             </section>
             <!-- High Score component -->
-            <section class="row">
+            <section id="highscores" class="row my-4">
                 <div class="col d-flex flex-column justify-content-center align-items-center">
                     <h2 class="text-center">High Scores</h2>
                     <table class="table table-striped table-hover w-50">
@@ -84,6 +92,10 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class="d-flex flex-row justify-content-between w-50">
+                        <button class="home-btn btn btn-primary">Home</a>
+                        <button class="reset-highscores-btn btn btn-secondary">Reset Highscores</a>
+                    </div>
                 </div>
             </section>
         </main>
@@ -100,6 +112,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+
 </body>
 
 </html>

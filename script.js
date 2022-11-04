@@ -34,6 +34,14 @@ function startQuiz() {
     $('#b').text(slide.answer_choices[1])
     $('#c').text(slide.answer_choices[2])
     $('#d').text(slide.answer_choices[3])
+    $('#answer-choices').on('click', function (e) {
+        if($(e.target).text() === slide.correct_answer) {
+            console.log('correct')
+            endQuiz()
+        } else {
+            console.log('wrong')
+        }
+    })
 
 }
 

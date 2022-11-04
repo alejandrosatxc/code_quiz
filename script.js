@@ -17,30 +17,53 @@ function startQuiz() {
         if (time_remaining <= 0) {
             endQuiz()
         }
-    }, 100)
+    }, 1000)
     $('#main-container').children().hide()
     $('#time-remaining').show()
     $('#questions').show()
-    var slides = []
-    slide = {
-        number: 1,
-        question: "Which of the following is a programming language? Like an actual programming language",
-        answer_choices: ['JavaScript', 'HTML', 'CSS', "jquery"],
-        correct_answer: "JavaScript"
+    var slides = [
+        {
+            number: 1,
+            question: "Which of the following is a programming language? Like an actual programming language",
+            answer_choices: ['JavaScript', 'HTML', 'CSS', "jquery"],
+            correct_answer: "JavaScript"
+        },
+        {
+            number: 2,
+            question: "What is catfish?",
+            answer_choices: ['A fish', 'Its 4 life', 'Nothing really', "Bananas"],
+            correct_answer: "Its 4 life"
+        },
+        {
+            number: 3,
+            question: "Which of the following would you use for quickly creating a web app with a layout and components?",
+            answer_choices: ['React', 'jquery', 'Bootstrap', "Events"],
+            correct_answer: "Bootstrap"
+        }
+    ]
+
+    for(var i in slides) {
+        $('.card-title').text('Question #' + slides[i].number)
+        $('.card-text').text(slides[i].question)
+        $('#a').text('A. ' + slides[i].answer_choices[0])
+        $('#b').text('B. ' + slides[i].answer_choices[1])
+        $('#c').text('C. ' + slides[i].answer_choices[2])
+        $('#d').text('D. ' + slides[i].answer_choices[3])
     }
-    $('.card-title').text('Question #' + slide.number)
-    $('.card-text').text(slide.question)
-    $('#a').text(slide.answer_choices[0])
-    $('#b').text(slide.answer_choices[1])
-    $('#c').text(slide.answer_choices[2])
-    $('#d').text(slide.answer_choices[3])
+
     $('#answer-choices').on('click', function (e) {
         if($(e.target).text() === slide.correct_answer) {
             console.log('correct')
             endQuiz()
         } else {
             console.log('wrong')
+            time_remaining -= 5
+            if (time_remaining <= 0) {
+                endQuiz()
+            }
+            $('#time-remaining').text("Time Remaining: " + time_remaining)
         }
+        
     })
 
 }

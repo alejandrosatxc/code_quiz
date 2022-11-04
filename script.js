@@ -1,11 +1,19 @@
 var quizTimer = null
-$('#main-container').children().hide()
+var score = 0
+var highscores = []
+var mainComponents = $('#main-container').children()
+mainComponents.hide()
 $('#welcome').show()
 $('.home-btn').on('click', home)
 $('.start-btn').on('click', startQuiz)
+$('.reset-highscores-btn').on('click', resetHighscores)
 $('.highscores-btn').on('click', showHighscores)
+$('#submit-btn').on('click', submitHighScore)
+
+loadHighscores()
 
 function startQuiz() {
+    score = 0
     //Start a timer
     var time_remaining = 60
     $('#time-remaining').text("Time Remaining: " + time_remaining)
@@ -41,46 +49,104 @@ function startQuiz() {
             correct_answer: "Bootstrap"
         }
     ]
+    var total_questions = slides.length
+    var slide = slides.pop()
 
-    for(var i in slides) {
-        $('.card-title').text('Question #' + slides[i].number)
-        $('.card-text').text(slides[i].question)
-        $('#a').text('A. ' + slides[i].answer_choices[0])
-        $('#b').text('B. ' + slides[i].answer_choices[1])
-        $('#c').text('C. ' + slides[i].answer_choices[2])
-        $('#d').text('D. ' + slides[i].answer_choices[3])
-    }
+    //present question
+    $('.card-title').text('Question #' + slide.number)
+    $('.card-text').text(slide.question)
+    $('#a').text(slide.answer_choices[0])
+    $('#b').text(slide.answer_choices[1])
+    $('#c').text(slide.answer_choices[2])
+    $('#d').text(slide.answer_choices[3])
 
+    //Add Click handler, use delegation to get users choice
     $('#answer-choices').on('click', function (e) {
-        if($(e.target).text() === slide.correct_answer) {
+        if ($(e.target).text() === slide.correct_answer) {
+            score += 100 / total_questions
             console.log('correct')
-            endQuiz()
         } else {
             console.log('wrong')
             time_remaining -= 5
-            if (time_remaining <= 0) {
-                endQuiz()
-            }
             $('#time-remaining').text("Time Remaining: " + time_remaining)
         }
-        
+        //If there is no more time due to point deduction, end quiz
+        if (time_remaining <= 0) {
+            endQuiz()
+        } else {
+            //check if there are still questions,
+            if (slides.length === 0) {
+                endQuiz()
+            } else {
+                slide = slides.pop()
+                $('.card-title').text('Question #' + slide.number)
+                $('.card-text').text(slide.question)
+                $('#a').text(slide.answer_choices[0])
+                $('#b').text(slide.answer_choices[1])
+                $('#c').text(slide.answer_choices[2])
+                $('#d').text(slide.answer_choices[3])
+            }
+        }
     })
-
 }
 
 function endQuiz() {
     //Stop the timer
     clearInterval(quizTimer)
-    $('#main-container').children().hide()
+    //Clear click handler
+    $('#answer-choices').off('click')
+    //Hide all components
+    mainComponents.hide()
     $('#done').show()
+    $('#score').text(score.toFixed(2))
 }
 
 function home() {
-    $('#main-container').children().hide()
+    mainComponents.hide()
     $('#welcome').show()
 }
 
+function submitHighScore() {
+    var highscore = {
+        name: $('#player-name').val().toUpperCase(),
+        score: score.toFixed(2)
+    }
+    highscores.push(highscore)
+    localStorage.setItem('codingQuizHighScores', JSON.stringify(highscores))
+    showHighscores()
+}
+
 function showHighscores() {
-    $('#main-container').children().hide()
+    mainComponents.hide()
+    loadHighscores()
     $('#highscores').show()
+}
+
+function loadHighscores() {
+
+    //Clear current highscores
+    $('tbody').children().remove()
+
+    //Load high scores from local storage
+    var data = localStorage.getItem('codingQuizHighScores')
+    if (data) {
+        highscores = JSON.parse(data)
+        for (var i in highscores) {
+            $('tbody').append(
+                '<tr>' +
+                '<th scope="row">' + i + '</th>' +
+                '<td>' + highscores[i].name + '</td>' +
+                '<td>' + highscores[i].score + '</td>' +
+                '</tr>'
+            )
+        }
+    } else {
+        highscores = []
+    }
+}
+
+function resetHighscores() {
+    localStorage.clear()
+    $('tbody').children().remove()
+    highscores = []
 }

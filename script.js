@@ -1,4 +1,5 @@
 var quizTimer = null
+var time_remaining = 60
 var score = 0
 var highscores = []
 var mainComponents = $('#main-container').children()
@@ -12,10 +13,8 @@ $('#submit-btn').on('click', submitHighScore)
 
 loadHighscores()
 
-function startQuiz() {
-    score = 0
-    //Start a timer
-    var time_remaining = 60
+function countdown() {
+    time_remaining = 60
     $('#time-remaining').text("Time Remaining: " + time_remaining)
     time_remaining--
     quizTimer = setInterval(function () {
@@ -26,6 +25,13 @@ function startQuiz() {
             endQuiz()
         }
     }, 1000)
+}
+
+function startQuiz() {
+    score = 0
+    //Start a timer
+    countdown()
+
     $('#main-container').children().hide()
     $('#time-remaining').show()
     $('#questions').show()
@@ -68,14 +74,17 @@ function startQuiz() {
     $('#c').text(slide.answer_choices[2])
     $('#d').text(slide.answer_choices[3])
 
+    //Hide feedback alerts
+    $('.alert-success').hide()
+    $('.alert-danger').hide()
     //Add Click handler, use delegation to get users choice
     $('#answer-choices').on('click', function (e) {
         i++
         if ($(e.target).text() === slide.correct_answer) {
             score += 100 / total_questions
-            console.log('correct')
+            $('.alert-success').show()
         } else {
-            console.log('wrong')
+            $('.alert-danger').show()
             time_remaining -= 5
             $('#time-remaining').text("Time Remaining: " + time_remaining)
         }
@@ -85,15 +94,23 @@ function startQuiz() {
         } else {
             //check if there are still questions,
             if (slides.length === 0) {
-                endQuiz()
+                setTimeout(function () {
+                    $('.alert-success').hide()
+                    $('.alert-danger').hide()
+                    endQuiz()
+                },1000)
             } else {
-                slide = slides.pop()
-                $('.card-title').text(`Question ${i + 1} / ${total_questions}`)
-                $('.card-text').text(slide.question)
-                $('#a').text(slide.answer_choices[0])
-                $('#b').text(slide.answer_choices[1])
-                $('#c').text(slide.answer_choices[2])
-                $('#d').text(slide.answer_choices[3])
+                setTimeout(function () {
+                    $('.alert-success').hide()
+                    $('.alert-danger').hide()
+                    slide = slides.pop()
+                    $('.card-title').text(`Question ${i + 1} / ${total_questions}`)
+                    $('.card-text').text(slide.question)
+                    $('#a').text(slide.answer_choices[0])
+                    $('#b').text(slide.answer_choices[1])
+                    $('#c').text(slide.answer_choices[2])
+                    $('#d').text(slide.answer_choices[3])
+                }, 1000)
             }
         }
     })
@@ -104,6 +121,8 @@ function endQuiz() {
     clearInterval(quizTimer)
     //Clear click handler
     $('#answer-choices').off('click')
+    //Add remaining time to score
+    score += time_remaining
     //Hide all components
     mainComponents.hide()
     $('#done').show()
@@ -111,17 +130,24 @@ function endQuiz() {
 }
 
 function home() {
+
+    //Hide all components
     mainComponents.hide()
+    //Show Welcome component
     $('#welcome').show()
 }
 
 function submitHighScore() {
+    //Create an object to hold user data
     var highscore = {
         name: $('#player-name').val().toUpperCase(),
         score: score.toFixed(2)
     }
+    //Push that highscore object into the global array of highscores
     highscores.push(highscore)
+    //Stringify that array, and save it to local storage
     localStorage.setItem('codingQuizHighScores', JSON.stringify(highscores))
+    
     showHighscores()
 }
 
@@ -140,7 +166,7 @@ function loadHighscores() {
     var data = localStorage.getItem('codingQuizHighScores')
     if (data) {
         highscores = JSON.parse(data)
-        highscores.sort((a,b) => b.score - a.score)
+        highscores.sort((a, b) => b.score - a.score)
         for (var i in highscores) {
             $('tbody').append(
                 '<tr>' +

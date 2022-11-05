@@ -140,6 +140,7 @@ function loadHighscores() {
     var data = localStorage.getItem('codingQuizHighScores')
     if (data) {
         highscores = JSON.parse(data)
+        highscores.sort((a,b) => b.score - a.score)
         for (var i in highscores) {
             $('tbody').append(
                 '<tr>' +

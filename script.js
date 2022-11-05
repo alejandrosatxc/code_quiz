@@ -31,29 +31,37 @@ function startQuiz() {
     $('#questions').show()
     var slides = [
         {
-            number: 1,
             question: "Which of the following is a programming language? Like an actual programming language",
             answer_choices: ['JavaScript', 'HTML', 'CSS', "jquery"],
             correct_answer: "JavaScript"
         },
         {
-            number: 2,
             question: "What is catfish?",
             answer_choices: ['A fish', 'Its 4 life', 'Nothing really', "Bananas"],
             correct_answer: "Its 4 life"
         },
         {
-            number: 3,
             question: "Which of the following would you use for quickly creating a web app with a layout and components?",
             answer_choices: ['React', 'jquery', 'Bootstrap', "Events"],
             correct_answer: "Bootstrap"
+        },
+        {
+            question: "Your Mom and dad are in a car accident, which one do you save first and how does that reflect our company values?",
+            answer_choices: ['Mom', 'Dad', 'wtf?', "idk."],
+            correct_answer: "wtf?"
+        },
+        {
+            question: "How much wood could a woodchuck chuck if a woodchuck could chuck wood?",
+            answer_choices: ['All of it', 'A lot', 'A solid 2 units of wood', "None"],
+            correct_answer: "All of it"
         }
     ]
+    var i = 0;
     var total_questions = slides.length
     var slide = slides.pop()
 
     //present question
-    $('.card-title').text('Question #' + slide.number)
+    $('.card-title').text(`Question ${i + 1} / ${total_questions}`)
     $('.card-text').text(slide.question)
     $('#a').text(slide.answer_choices[0])
     $('#b').text(slide.answer_choices[1])
@@ -62,6 +70,7 @@ function startQuiz() {
 
     //Add Click handler, use delegation to get users choice
     $('#answer-choices').on('click', function (e) {
+        i++
         if ($(e.target).text() === slide.correct_answer) {
             score += 100 / total_questions
             console.log('correct')
@@ -79,7 +88,7 @@ function startQuiz() {
                 endQuiz()
             } else {
                 slide = slides.pop()
-                $('.card-title').text('Question #' + slide.number)
+                $('.card-title').text(`Question ${i + 1} / ${total_questions}`)
                 $('.card-text').text(slide.question)
                 $('#a').text(slide.answer_choices[0])
                 $('#b').text(slide.answer_choices[1])

@@ -77,8 +77,8 @@ function startQuiz() {
 
     //present question by injecting question and answer choices into the question component
     //from the array of questions
-    $('.card-title').text(`Question ${i + 1} / ${total_questions}`)
-    $('.card-text').text(slide.question)
+    $('#progress').text(`Question ${i + 1} / ${total_questions}`)
+    $('#question-text').text(slide.question)
     $('#a').text(slide.answer_choices[0])
     $('#b').text(slide.answer_choices[1])
     $('#c').text(slide.answer_choices[2])
@@ -122,8 +122,8 @@ function startQuiz() {
                     $('.alert-success').hide()
                     $('.alert-danger').hide()
                     slide = slides.pop()
-                    $('.card-title').text(`Question ${i + 1} / ${total_questions}`)
-                    $('.card-text').text(slide.question)
+                    $('#progress').text(`Question ${i + 1} / ${total_questions}`)
+                    $('#question-text').text(slide.question)
                     $('#a').text(slide.answer_choices[0])
                     $('#b').text(slide.answer_choices[1])
                     $('#c').text(slide.answer_choices[2])
@@ -149,7 +149,6 @@ function endQuiz() {
 }
 
 function home() {
-
     //Hide all components
     mainComponents.hide()
     //Show Welcome component

@@ -77,7 +77,7 @@ function startQuiz() {
 
     //present question by injecting question and answer choices into the question component
     //from the array of questions
-    $('#progress').text(`Question ${i + 1} / ${total_questions}`)
+    $('#quiz-progress').text(`Question ${i + 1} / ${total_questions}`)
     $('#question-text').text(slide.question)
     $('#a').text(slide.answer_choices[0])
     $('#b').text(slide.answer_choices[1])
@@ -122,7 +122,7 @@ function startQuiz() {
                     $('.alert-success').hide()
                     $('.alert-danger').hide()
                     slide = slides.pop()
-                    $('#progress').text(`Question ${i + 1} / ${total_questions}`)
+                    $('#quiz-progress').text(`Question ${i + 1} / ${total_questions}`)
                     $('#question-text').text(slide.question)
                     $('#a').text(slide.answer_choices[0])
                     $('#b').text(slide.answer_choices[1])
